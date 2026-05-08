@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PRODUCTS } from '../constants/products';
 import { ShoppingBag, ArrowRight } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { useAppStore } from '../store';
 
 export default function Shop() {
+  const [activeCategory, setActiveCategory] = useState('All Products');
+  const { addToCart } = useAppStore();
+
+  const filteredProducts = activeCategory === 'All Products'
+    ? PRODUCTS
+    : PRODUCTS.filter(p => p.category === activeCategory);
+
   return (
     <div className="p-8 space-y-12 max-w-7xl mx-auto">
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -12,12 +20,13 @@ export default function Shop() {
           <h1 className="text-4xl font-serif font-bold text-primary italic">Healing Shop</h1>
         </div>
         <div className="flex gap-2">
-          {['All Products', 'Oils', 'Honey', 'Bundles'].map((cat, i) => (
+          {['All Products', 'Oils', 'Honey', 'Bundles'].map((cat) => (
             <button 
               key={cat} 
+              onClick={() => setActiveCategory(cat)}
               className={cn(
                 "px-4 py-2 rounded-xl text-xs font-bold transition-all",
-                i === 0 ? "bg-primary text-white" : "bg-sand text-stone hover:bg-sage hover:text-primary"
+                activeCategory === cat ? "bg-primary text-white" : "bg-sand text-stone hover:bg-sage hover:text-primary"
               )}
             >
               {cat}
@@ -41,7 +50,7 @@ export default function Shop() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {PRODUCTS.map(product => (
+        {filteredProducts.map(product => (
           <div key={product.id} className="group space-y-4">
             <div className="aspect-[4/5] bg-sand rounded-[32px] overflow-hidden relative shadow-sm group-hover:shadow-xl group-hover:shadow-primary/5 transition-all">
               <img 
@@ -52,7 +61,10 @@ export default function Shop() {
               <div className="absolute top-4 left-4">
                 <span className="px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-bold text-primary uppercase tracking-wider">{product.category}</span>
               </div>
-              <button className="absolute bottom-4 left-4 right-4 bg-primary text-white py-3 rounded-2xl font-bold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all flex items-center justify-center gap-2">
+              <button
+                onClick={() => addToCart({ id: product.id, name: product.name, price: product.price })}
+                className="absolute bottom-4 left-4 right-4 bg-primary text-white py-3 rounded-2xl font-bold opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
                 <ShoppingBag size={18} /> Add to Cart
               </button>
             </div>

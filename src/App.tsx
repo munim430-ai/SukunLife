@@ -1,11 +1,22 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Home, ClipboardList, ShoppingBag, BookOpen, User, Phone, ShoppingCart, ArrowRight, AlertCircle, Headphones } from 'lucide-react';
+import { Home, ClipboardList, ShoppingBag, BookOpen, User, Phone, ShoppingCart, ArrowRight, AlertCircle, Headphones, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from './lib/utils';
+import { useAppStore } from './store';
 
 // Placeholder Pages
-const Dashboard = () => (
+const Dashboard = () => {
+  const { language, setLanguage, journeyProgress, updateJourneyProgress } = useAppStore();
+  const [taskSubmitted, setTaskSubmitted] = React.useState(false);
+
+  const handleSubmitTask = () => {
+    updateJourneyProgress(Math.min(100, journeyProgress + 3));
+    setTaskSubmitted(true);
+    setTimeout(() => setTaskSubmitted(false), 3000);
+  };
+
+  return (
   <div className="p-8 space-y-8 max-w-7xl mx-auto">
     <header className="flex items-center justify-between">
       <section className="space-y-1">
@@ -16,10 +27,12 @@ const Dashboard = () => (
       </section>
       <div className="flex items-center gap-4">
         <div className="flex gap-2 bg-sand p-1 rounded-full">
-          <button className="px-3 py-1 text-xs font-bold rounded-full bg-white shadow-sm">EN</button>
-          <button className="px-3 py-1 text-xs font-bold text-stone">BN</button>
+          <button onClick={() => setLanguage('EN')} className={cn("px-3 py-1 text-xs font-bold rounded-full transition-colors", language === 'EN' ? "bg-white shadow-sm" : "text-stone hover:text-primary")}>EN</button>
+          <button onClick={() => setLanguage('BN')} className={cn("px-3 py-1 text-xs font-bold rounded-full transition-colors", language === 'BN' ? "bg-white shadow-sm" : "text-stone hover:text-primary")}>BN</button>
         </div>
-        <div className="w-10 h-10 rounded-full bg-sage border-2 border-white shadow-sm"></div>
+        <div className="w-10 h-10 rounded-full bg-sage border-2 border-white shadow-sm overflow-hidden">
+           <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&h=100" alt="Profile" className="w-full h-full object-cover" />
+        </div>
       </div>
     </header>
 
@@ -41,19 +54,19 @@ const Dashboard = () => (
         <div className="space-y-2 max-w-md">
           <div className="flex justify-between text-[11px] font-bold text-stone">
             <span>Day 4 of 30</span>
-            <span>12% Complete</span>
+            <span>{journeyProgress}% Complete</span>
           </div>
           <div className="h-2 w-full bg-sand rounded-full overflow-hidden">
             <motion.div 
               initial={{ width: 0 }}
-              animate={{ width: "12%" }}
+              animate={{ width: `${journeyProgress}%` }}
               className="h-full bg-primary rounded-full" 
             />
           </div>
         </div>
 
-        <button className="btn-natural">
-          Submit Today's Task
+        <button onClick={handleSubmitTask} disabled={taskSubmitted} className="btn-natural disabled:opacity-50 disabled:cursor-not-allowed">
+          {taskSubmitted ? "Task Submitted!" : "Submit Today's Task"}
         </button>
       </div>
     </div>
@@ -102,10 +115,10 @@ const Dashboard = () => (
           <p className="text-stone text-sm leading-relaxed max-w-md">Immediate spiritual assistance for severe possession symptoms or extreme distress.</p>
         </div>
       </div>
-      <button className="px-10 py-4 bg-red-600 text-white rounded-2xl font-bold hover:bg-red-700 transition-colors shadow-lg shadow-red-200/50 whitespace-nowrap">Request Help Now</button>
+      <button onClick={() => alert('Emergency protocols activated. Our team has been notified and will contact you immediately.')} className="px-10 py-4 bg-red-600 text-white rounded-2xl font-bold hover:bg-red-700 transition-colors shadow-lg shadow-red-200/50 whitespace-nowrap">Request Help Now</button>
     </div>
   </div>
-);
+)};
 
 
 const AssessmentPage = () => (
@@ -126,6 +139,9 @@ const AssessmentPage = () => (
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
+  const { cart, isCartOpen, setCartOpen, removeFromCart } = useAppStore();
+  const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const cartTotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   
   const navItems = [
     { path: '/', icon: Home, label: 'Dashboard' },
@@ -177,15 +193,67 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       </aside>
 
       {/* Main Content */}
+      {/* Desktop Top Nav Overlay (Optional) but we'll use a global cart toggle here */}
+      {/* Global Cart Sidebar */}
+      <AnimatePresence>
+        {isCartOpen && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-stone/20 backdrop-blur-sm z-50 flex justify-end"
+            onClick={() => setCartOpen(false)}
+          >
+            <motion.div
+              initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
+              className="w-full md:w-96 bg-white h-full shadow-2xl flex flex-col"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-sand flex items-center justify-between">
+                <h2 className="text-xl font-serif font-bold text-primary">Your Cart</h2>
+                <button onClick={() => setCartOpen(false)} className="p-2 hover:bg-sand rounded-full transition-colors"><X size={20} /></button>
+              </div>
+              <div className="flex-1 p-6 overflow-y-auto space-y-4">
+                {cart.length === 0 ? (
+                  <p className="text-stone text-center py-10">Your cart is empty.</p>
+                ) : (
+                  cart.map(item => (
+                    <div key={item.id} className="flex justify-between items-center bg-sand/30 p-4 rounded-xl">
+                      <div>
+                        <h4 className="font-bold text-primary text-sm">{item.name}</h4>
+                        <p className="text-xs text-stone">{item.quantity} x ${item.price}</p>
+                      </div>
+                      <button onClick={() => removeFromCart(item.id)} className="text-red-500 hover:text-red-700 text-xs font-bold">Remove</button>
+                    </div>
+                  ))
+                )}
+              </div>
+              {cart.length > 0 && (
+                <div className="p-6 border-t border-sand space-y-4 bg-sand/10">
+                  <div className="flex justify-between font-bold text-lg">
+                    <span>Total:</span>
+                    <span>${cartTotal.toFixed(2)}</span>
+                  </div>
+                  <button onClick={() => alert('Checkout flow not fully implemented yet!')} className="w-full py-4 bg-primary text-white rounded-xl font-bold hover:bg-primary/90">
+                    Proceed to Checkout
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <main className="flex-1">
-        <header className="h-20 bg-white border-b border-border flex items-center justify-between px-8 sticky top-0 z-10 md:hidden">
-          <div className="flex items-center gap-2">
+        <header className="h-20 bg-white border-b border-border flex items-center justify-between px-8 sticky top-0 z-10">
+          <div className="flex items-center gap-2 md:hidden">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-serif text-lg italic">S</div>
             <span className="font-serif font-bold text-primary">Sukun Care</span>
           </div>
-          <button className="relative p-2 text-stone">
+          <div className="hidden md:block"></div> {/* Spacer for desktop */}
+          <button onClick={() => setCartOpen(true)} className="relative p-2 text-stone hover:text-primary transition-colors">
             <ShoppingCart size={22} />
-            <span className="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-white">0</span>
+            {cartItemCount > 0 && (
+              <span className="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-white">{cartItemCount}</span>
+            )}
           </button>
         </header>
         

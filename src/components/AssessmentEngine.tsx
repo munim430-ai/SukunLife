@@ -26,17 +26,20 @@ export default function AssessmentEngine() {
     if (total > 15) return { 
       level: 'High Concern', 
       desc: 'Your symptoms suggest deep structural spiritual issues that may require direct Ruqyah intervention.',
-      action: 'Book a Consultation'
+      action: 'Book a Consultation',
+      link: '/services'
     };
     if (total > 5) return { 
       level: 'Medium Concern', 
       desc: 'Some signs of spiritual imbalance detected. A self-care plan or protective Adhkar might be beneficial.',
-      action: 'Start 7-Day Plan'
+      action: 'Start 7-Day Plan',
+      link: '/'
     };
     return { 
       level: 'Low Concern', 
       desc: 'No major signs detected. Maintain your daily protection and Adhkar.',
-      action: 'View Daily Duas'
+      action: 'View Daily Duas',
+      link: '/audio'
     };
   };
 
@@ -60,10 +63,10 @@ export default function AssessmentEngine() {
           </div>
 
           <div className="grid grid-cols-1 gap-4 pt-4">
-            <button className="btn-natural py-4 text-lg">
+            <Link to={result.link} className="btn-natural py-4 text-lg text-center block">
               {result.action}
-            </button>
-            <Link to="/" className="w-full py-4 bg-sand text-primary font-bold rounded-2xl text-center border border-border hover:bg-white transition-colors">
+            </Link>
+            <Link to="/" className="w-full py-4 bg-sand text-primary font-bold rounded-2xl text-center border border-border hover:bg-white transition-colors block">
               Return to Dashboard
             </Link>
           </div>

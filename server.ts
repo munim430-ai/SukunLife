@@ -1,4 +1,5 @@
-import express from "express";
+import * as expressLib from "express";
+const express = (expressLib as any).default || expressLib;
 import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
