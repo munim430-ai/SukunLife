@@ -1,0 +1,16 @@
+{
+  "name": "Sukun Care",
+  "description": "A premium Islamic healing and wellness platform for Ruqyah, Hijama, counseling, and spiritual care journeys.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "Ecommerce",
+    "Booking System",
+    "LMS (Courses)",
+    "Self-Assessment Engine",
+    "Audio/Video Streaming"
+  ]
+}

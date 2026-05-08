@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Standard app user profile.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phoneNumber": { "type": "string" },
+        "gender": { "type": "string", "enum": ["male", "female"] },
+        "role": { "type": "string", "enum": ["user", "practitioner", "admin"] },
+        "membership": { "type": "string", "enum": ["free", "basic", "premium"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "displayName", "role"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Service appointment record.",
+      "type": "object",
+      "properties": {
+        "bookingId": { "type": "string" },
+        "userId": { "type": "string" },
+        "serviceId": { "type": "string" },
+        "practitionerId": { "type": "string" },
+        "scheduledAt": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "completed", "cancelled"] },
+        "notes": { "type": "string" },
+        "paymentStatus": { "type": "string", "enum": ["unpaid", "partial", "paid"] }
+      }
+    },
+    "Assessment": {
+      "title": "Assessment",
+      "description": "User self-assessment results.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "category": { "type": "string" },
+        "score": { "type": "number" },
+        "concernLevel": { "type": "string", "enum": ["low", "medium", "high", "emergency"] },
+        "responses": { "type": "object" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Ecommerce product.",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string" },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "stock": { "type": "number" },
+        "category": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and global metadata."
+    },
+    "bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "Booking records."
+    },
+    "assessments/{assessmentId}": {
+      "schema": "Assessment",
+      "description": "Completed self-assessments."
+    },
+    "products/{productId}": {
+      "schema": "Product",
+      "description": "Inventory and catalog."
+    }
+  }
+}
