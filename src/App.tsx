@@ -6,24 +6,18 @@ import { cn } from './lib/utils';
 
 // Placeholder Pages
 const Dashboard = () => (
-  <div className="p-8 space-y-8 max-w-7xl mx-auto">
-    <header className="flex items-center justify-between">
-      <section className="space-y-1">
-        <p className="text-xs text-stone uppercase tracking-wide font-bold">Assalamu Alaikum,</p>
-        <h1 className="text-3xl font-serif italic text-primary">
-          Ahmed Bin Yusuf
-        </h1>
-      </section>
-      <div className="flex items-center gap-4">
-        <div className="flex gap-2 bg-sand p-1 rounded-full">
-          <button className="px-3 py-1 text-xs font-bold rounded-full bg-white shadow-sm">EN</button>
-          <button className="px-3 py-1 text-xs font-bold text-stone">BN</button>
-        </div>
-        <Link to="/profile" className="w-10 h-10 rounded-full bg-sage border-2 border-white shadow-sm flex items-center justify-center text-primary font-serif italic text-sm hover:scale-110 transition-transform">
-          AY
-        </Link>
-      </div>
-    </header>
+  <div className="p-8 space-y-12 max-w-7xl mx-auto">
+    {/* Spiritual Welcome */}
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-2 pb-8 border-b border-sand"
+    >
+      <p className="text-xs text-stone uppercase tracking-[0.3em] font-black opacity-40">Assalamu Alaikum,</p>
+      <h1 className="text-5xl font-serif italic text-primary font-bold">
+        Ahmed Yusuf
+      </h1>
+    </motion.div>
 
     {/* Guided Journey Card - Active Plan */}
     <div className="relative card-natural p-8 overflow-hidden group">
@@ -179,6 +173,29 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
       {/* Main Content */}
       <main className="flex-1">
+        {/* Desktop Top Bar */}
+        <header className="hidden md:flex h-20 bg-white border-b border-border items-center justify-between px-8 sticky top-0 z-10">
+          <div className="flex items-center gap-4 text-stone">
+             <span className="text-xs font-bold uppercase tracking-widest opacity-40 italic font-serif">Islamic Spiritual Wellness Platform</span>
+          </div>
+          <div className="flex items-center gap-6">
+            <button className="relative p-2 text-stone hover:text-primary transition-colors">
+              <ShoppingCart size={22} />
+              <span className="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-white">0</span>
+            </button>
+            <div className="h-6 w-px bg-sand" />
+            <Link to="/profile" className="flex items-center gap-3 group">
+              <div className="text-right">
+                <p className="text-xs font-bold text-stone group-hover:text-primary transition-colors">Ahmed Yusuf</p>
+                <p className="text-[10px] text-stone opacity-50 uppercase tracking-widest font-black">Standard Plan</p>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-sage border-2 border-white shadow-sm flex items-center justify-center text-primary font-serif italic text-sm group-hover:scale-110 transition-transform">
+                AY
+              </div>
+            </Link>
+          </div>
+        </header>
+
         <header className="h-20 bg-white border-b border-border flex items-center justify-between px-8 sticky top-0 z-10 md:hidden">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-serif text-lg italic">S</div>

@@ -5,11 +5,13 @@ import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
 
 const AUDIO_TRACKS = [
-  { id: 't1', title: 'Full Ruqyah for General Healing', artist: 'Sheikh Mishary Rashid', duration: '45:12', category: 'General' },
-  { id: 't2', title: 'Protection from Evil Eye', artist: 'Sheikh Idris Abkar', duration: '12:30', category: 'Evil Eye' },
+  { id: 't1', title: 'Full Ruqyah for General Healing', artist: 'Sheikh Mishary Rashid', duration: '45:12', category: 'General Healing' },
+  { id: 't2', title: 'Protection from Evil Eye', artist: 'Sheikh Idris Abkar', duration: '12:30', category: 'Protection' },
   { id: 't3', title: 'Morning Adhkar (Shifah Focus)', artist: 'Sukun Care Exclusive', duration: '22:15', category: 'Protection' },
-  { id: 't4', title: 'Manzil Recitation (Speed 1.2x)', artist: 'Sheikh Muhammad Siddiq', duration: '08:45', category: 'Sihr' },
-  { id: 't5', title: 'Surah Al-Baqarah (First 5 Ayah)', artist: 'Sheikh Sudais', duration: '05:20', category: 'Quran' },
+  { id: 't4', title: 'The Concept of Sabr in Illness', artist: 'Sukun Academy', duration: '15:45', category: 'Islamic Teachings' },
+  { id: 't5', title: 'Etiquettes of Visiting the Sick', artist: 'Ustadh Omar', duration: '10:20', category: 'Islamic Teachings' },
+  { id: 't6', title: 'Manzil Recitation (Speed 1.2x)', artist: 'Sheikh Muhammad Siddiq', duration: '08:45', category: 'General Healing' },
+  { id: 't7', title: 'Surah Al-Baqarah (First 5 Ayah)', artist: 'Sheikh Sudais', duration: '05:20', category: 'Quran' },
 ];
 
 export default function AudioLibrary() {
@@ -51,7 +53,7 @@ export default function AudioLibrary() {
 
         <nav className="space-y-3">
           <p className="text-[10px] font-bold text-stone uppercase tracking-widest ml-4 mb-2">Categories</p>
-          {['All Audio', 'General Healing', 'Protection', 'Quran'].map((cat) => (
+          {['All Audio', 'General Healing', 'Protection', 'Quran', 'Islamic Teachings'].map((cat) => (
             <button 
               key={cat} 
               onClick={() => setSelectedCategory(cat)}
