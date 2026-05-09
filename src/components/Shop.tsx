@@ -17,7 +17,7 @@ export default function Shop() {
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-2">
           <p className="text-[10px] font-bold uppercase tracking-widest text-stone">Spiritual Wellness</p>
-          <h1 className="text-4xl font-serif font-bold text-primary italic">Healing Shop</h1>
+          <h1 className="text-4xl font-serif font-bold text-primary italic font-serif">হিলিং শপ</h1>
         </div>
         <div className="flex gap-2">
           {['All Products', 'Oils', 'Honey', 'Bundles'].map((cat) => (

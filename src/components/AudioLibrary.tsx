@@ -7,18 +7,18 @@ import { cn } from '../lib/utils';
 const DEMO_AUDIO_URL = "https://actions.google.com/sounds/v1/water/rain_on_roof.ogg";
 
 const AUDIO_TRACKS = [
-  { id: 't1', title: 'Full Ruqyah for General Healing', artist: 'Sheikh Mishary Rashid', duration: '45:12', category: 'General Healing', src: DEMO_AUDIO_URL },
-  { id: 't2', title: 'Protection from Evil Eye', artist: 'Sheikh Idris Abkar', duration: '12:30', category: 'Evil Eye', src: DEMO_AUDIO_URL },
-  { id: 't3', title: 'Morning Adhkar (Shifah Focus)', artist: 'Sukun Care Exclusive', duration: '22:15', category: 'Protection', src: DEMO_AUDIO_URL },
-  { id: 't4', title: 'Manzil Recitation (Speed 1.2x)', artist: 'Sheikh Muhammad Siddiq', duration: '08:45', category: 'Black Magic', src: DEMO_AUDIO_URL },
-  { id: 't5', title: 'Surah Al-Baqarah (First 5 Ayah)', artist: 'Sheikh Sudais', duration: '05:20', category: 'Quran', src: DEMO_AUDIO_URL },
+  { id: 't1', title: 'Full Ruqyah for General Healing', artist: 'Sheikh Mishary Rashid', duration: '45:12', category: 'সাধারণ রুকইয়াহ', src: DEMO_AUDIO_URL },
+  { id: 't2', title: 'Protection from Evil Eye', artist: 'Sheikh Idris Abkar', duration: '12:30', category: 'বদনজর', src: DEMO_AUDIO_URL },
+  { id: 't3', title: 'Morning Adhkar (Shifah Focus)', artist: 'Sukun Care Exclusive', duration: '22:15', category: 'প্রটেকশন', src: DEMO_AUDIO_URL },
+  { id: 't4', title: 'Manzil Recitation (Speed 1.2x)', artist: 'Sheikh Muhammad Siddiq', duration: '08:45', category: 'জাদু', src: DEMO_AUDIO_URL },
+  { id: 't5', title: 'Surah Al-Baqarah (First 5 Ayah)', artist: 'Sheikh Sudais', duration: '05:20', category: 'কোরআন', src: DEMO_AUDIO_URL },
 ];
 
 export default function AudioLibrary() {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [activeCategory, setActiveCategory] = useState('All Audio');
+  const [activeCategory, setActiveক্যাটাগরি] = useState('All Audio');
   const [searchQuery, setSearchQuery] = useState('');
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
 
@@ -81,8 +81,8 @@ export default function AudioLibrary() {
             <Headphones size={28} />
           </div>
           <div className="space-y-1">
-            <h1 className="text-3xl font-serif font-bold text-primary italic">Resources</h1>
-            <p className="text-xs font-bold text-stone uppercase tracking-widest">Audio Ruqyah & Adhkar</p>
+            <h1 className="text-3xl font-serif font-bold text-primary italic">রিসোর্সসমূহ</h1>
+            <p className="text-xs font-bold text-stone tracking-widest">অডিও রুকইয়াহ ও আযকার</p>
           </div>
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-stone/50" size={18} />
@@ -90,7 +90,7 @@ export default function AudioLibrary() {
               type="text" 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search library..." 
+              placeholder="লাইব্রেরি খুঁজুন..."
               className="w-full pl-12 pr-4 py-4 bg-sand rounded-2xl text-sm outline-none focus:ring-2 ring-primary/10 transition-all font-medium border border-transparent focus:border-sand"
             />
           </div>
@@ -101,7 +101,7 @@ export default function AudioLibrary() {
           {['All Audio', 'General Healing', 'Evil Eye', 'Black Magic', 'Protection', 'Quran'].map((cat) => (
             <button 
               key={cat} 
-              onClick={() => setActiveCategory(cat)}
+              onClick={() => setActiveক্যাটাগরি(cat)}
               className={cn(
                 "w-full text-left px-5 py-4 rounded-2xl text-sm font-bold transition-all flex items-center justify-between group",
                 activeCategory === cat ? "bg-primary text-white shadow-xl shadow-primary/10" : "text-stone hover:bg-sand hover:text-primary"
@@ -117,8 +117,8 @@ export default function AudioLibrary() {
       {/* Track List */}
       <div className="flex-1 p-8 space-y-8">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-serif font-bold text-primary italic">Featured Tracks</h2>
-          <button className="text-primary font-bold text-sm underline decoration-sand decoration-4 underline-offset-4 hover:decoration-primary transition-all">Play All</button>
+          <h2 className="text-xl font-serif font-bold text-primary italic">ফিচার্ড ট্র্যাকসমূহ</h2>
+          <button className="text-primary font-bold text-sm underline decoration-sand decoration-4 underline-offset-4 hover:decoration-primary transition-all">সব চালান</button>
         </div>
 
         <div className="grid grid-cols-1 gap-3">

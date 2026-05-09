@@ -67,7 +67,7 @@ export default function AssessmentEngine() {
               {result.action}
             </Link>
             <Link to="/" className="w-full py-4 bg-sand text-primary font-bold rounded-2xl text-center border border-border hover:bg-white transition-colors block">
-              Return to Dashboard
+              ড্যাশবোর্ডে ফিরে যান
             </Link>
           </div>
         </div>

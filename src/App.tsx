@@ -96,7 +96,7 @@ const Dashboard = () => {
         <div className="w-12 h-12 bg-sand text-primary rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
           <ShoppingBag size={24} />
         </div>
-        <h3 className="text-xl font-serif font-bold">Healing Shop</h3>
+        <h3 className="text-xl font-serif font-bold font-serif">হিলিং শপ</h3>
         <p className="text-sm text-stone leading-relaxed">High-quality oils, honey, and herbs prepared with spiritual care.</p>
         <Link to="/shop" className="inline-flex items-center gap-2 font-bold text-sm text-primary">Explore Store <ArrowRight size={14} /></Link>
       </div>
@@ -144,12 +144,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const cartTotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   
   const navItems = [
-    { path: '/', icon: Home, label: 'Dashboard' },
-    { path: '/services', icon: Phone, label: 'Appointments' },
-    { path: '/shop', icon: ShoppingBag, label: 'Healing Shop' },
-    { path: '/courses', icon: BookOpen, label: 'Academy' },
-    { path: '/audio', icon: Headphones, label: 'Resources' },
-    { path: '/profile', icon: User, label: 'Profile' },
+    { path: '/', icon: Home, label: 'ড্যাশবোর্ড' },
+    { path: '/services', icon: Phone, label: 'অ্যাপয়েন্টমেন্ট' },
+    { path: '/shop', icon: ShoppingBag, label: 'শপ' },
+    { path: '/courses', icon: BookOpen, label: 'কোর্স' },
+    { path: '/audio', icon: Headphones, label: 'রুকইয়াহ প্লেয়ার' },
+    { path: '/profile', icon: User, label: 'প্রোফাইল' },
   ];
 
   return (
@@ -158,8 +158,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-64 bg-white border-r border-border flex-col">
         <div className="p-8">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center text-white font-serif text-xl italic shadow-md">S</div>
-            <h1 className="text-xl font-bold tracking-tight text-primary font-serif">Sukun Care</h1>
+            <img src="/logo-big.png" alt="SukunLife Logo" className="w-10 h-10 object-contain" />
+            <h1 className="text-xl font-bold tracking-tight text-[#62953A] font-serif">সুকুনলাইফ</h1>
           </div>
         </div>
         
@@ -184,10 +184,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className="p-6">
           <div className="bg-primary text-white p-6 rounded-[24px] shadow-xl shadow-primary/20 space-y-4">
             <div className="space-y-1">
-              <p className="text-[10px] opacity-70 uppercase tracking-widest font-bold">Premium</p>
-              <p className="text-sm font-serif italic">Guided Ruqyah Journeys</p>
+              <p className="text-[10px] opacity-70 tracking-widest font-bold font-serif">প্রিমিয়াম</p>
+              <p className="text-sm font-serif italic">গাইডেড রুকইয়াহ জার্নি</p>
             </div>
-            <button className="w-full bg-background text-primary text-[10px] font-black py-3 rounded-xl tracking-wider hover:bg-white transition-colors">UPGRADE NOW</button>
+            <button className="w-full bg-background text-primary text-[10px] font-black py-3 rounded-xl tracking-wider hover:bg-white transition-colors">আপগ্রেড করুন</button>
           </div>
         </div>
       </aside>
@@ -245,8 +245,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <main className="flex-1">
         <header className="h-20 bg-white border-b border-border flex items-center justify-between px-8 sticky top-0 z-10">
           <div className="flex items-center gap-2 md:hidden">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-serif text-lg italic">S</div>
-            <span className="font-serif font-bold text-primary">Sukun Care</span>
+            <img src="/logo.png" alt="SukunLife Logo" className="h-8" />
+            <span className="font-serif font-bold text-[#62953A] text-xl">সুকুনলাইফ</span>
           </div>
           <div className="hidden md:block"></div> {/* Spacer for desktop */}
           <button onClick={() => setCartOpen(true)} className="relative p-2 text-stone hover:text-primary transition-colors">
@@ -307,7 +307,7 @@ export default function App() {
           <Route path="/shop" element={<Shop />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/audio" element={<AudioLibrary />} />
-          <Route path="/profile" element={<div className="p-6"><h1>My Profile</h1></div>} />
+          <Route path="/profile" element={<div className="p-6"><h1>আমার প্রোফাইল</h1></div>} />
         </Routes>
       </Layout>
     </BrowserRouter>
