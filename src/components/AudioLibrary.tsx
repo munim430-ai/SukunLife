@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Play, Pause, SkipBack, SkipForward, ListOrdered, Heart, Search, Headphones } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, ListOrdered, Heart, Search, Headphones, Book, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
 
@@ -65,16 +66,49 @@ export default function AudioLibrary() {
             </button>
           ))}
         </nav>
+
+        <div className="pt-6 border-t border-sand">
+           <Link to="/quran" className="flex items-center gap-4 p-4 bg-sage rounded-2xl text-primary hover:scale-[1.02] transition-all group">
+             <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">
+               <Book size={20} />
+             </div>
+             <div className="space-y-0.5">
+                <p className="text-xs font-black uppercase tracking-widest">Full Quran</p>
+                <p className="text-[10px] opacity-60 font-medium">Interactive Reader</p>
+             </div>
+             <ChevronRight size={14} className="ml-auto opacity-30 group-hover:opacity-100 transition-all" />
+           </Link>
+        </div>
       </div>
 
       {/* Track List */}
-      <div className="flex-1 p-8 space-y-8">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-serif font-bold text-primary italic">Featured Tracks</h2>
-          <div className="flex gap-4">
-             <span className="text-[10px] font-bold text-stone uppercase tracking-widest">{filteredTracks.length} tracks found</span>
-          </div>
-        </div>
+      <div className="flex-1 p-8 space-y-10">
+        <header className="space-y-8">
+           <div className="flex items-center justify-between">
+              <h2 className="text-xl font-serif font-bold text-primary italic">Featured Tracks</h2>
+              <span className="text-[10px] font-bold text-stone uppercase tracking-widest">{filteredTracks.length} tracks found</span>
+           </div>
+
+           {/* Hero Entry to Quran */}
+           <motion.div 
+            whileHover={{ scale: 1.01 }}
+            className="card-natural p-1 rounded-[40px] border-2 border-sage group bg-gradient-to-br from-white to-sage/20"
+           >
+              <div className="p-10 flex flex-col md:flex-row items-center justify-between gap-10">
+                <div className="space-y-6 flex-1 text-center md:text-left">
+                  <div className="flex flex-col items-center md:items-start gap-3">
+                    <span className="px-4 py-2 bg-primary text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary/20">Miraculous Word</span>
+                    <h3 className="text-4xl font-serif font-bold text-primary italic leading-tight">The Glorious Qur'an</h3>
+                  </div>
+                  <p className="text-stone font-medium leading-relaxed max-w-sm">Access the complete interactive text and heart-soothing recitations of the final revelation.</p>
+                  <Link to="/quran" className="btn-natural py-4 px-12 group-hover:px-14 transition-all">Open Sacred Reader</Link>
+                </div>
+                <div className="w-full md:w-48 aspect-square rounded-[32px] bg-white border-2 border-sage flex items-center justify-center text-primary shadow-2xl group-hover:rotate-6 transition-transform">
+                  <Book size={80} strokeWidth={1} />
+                </div>
+              </div>
+           </motion.div>
+        </header>
 
         <div className="grid grid-cols-1 gap-3">
           {filteredTracks.map(track => (

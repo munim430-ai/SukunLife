@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Home, ClipboardList, ShoppingBag, BookOpen, User, Phone, ShoppingCart, ArrowRight, AlertCircle, Headphones } from 'lucide-react';
+import { Home, ClipboardList, ShoppingBag, BookOpen, User, Phone, ShoppingCart, ArrowRight, AlertCircle, Headphones, Book } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from './lib/utils';
 
@@ -19,7 +19,9 @@ const Dashboard = () => (
           <button className="px-3 py-1 text-xs font-bold rounded-full bg-white shadow-sm">EN</button>
           <button className="px-3 py-1 text-xs font-bold text-stone">BN</button>
         </div>
-        <div className="w-10 h-10 rounded-full bg-sage border-2 border-white shadow-sm"></div>
+        <Link to="/profile" className="w-10 h-10 rounded-full bg-sage border-2 border-white shadow-sm flex items-center justify-center text-primary font-serif italic text-sm hover:scale-110 transition-transform">
+          AY
+        </Link>
       </div>
     </header>
 
@@ -133,7 +135,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     { path: '/shop', icon: ShoppingBag, label: 'Healing Shop' },
     { path: '/courses', icon: BookOpen, label: 'Academy' },
     { path: '/audio', icon: Headphones, label: 'Resources' },
-    { path: '/profile', icon: User, label: 'Profile' },
   ];
 
   return (
@@ -183,10 +184,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-serif text-lg italic">S</div>
             <span className="font-serif font-bold text-primary">Sukun Care</span>
           </div>
-          <button className="relative p-2 text-stone">
-            <ShoppingCart size={22} />
-            <span className="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-white">0</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button className="relative p-2 text-stone">
+              <ShoppingCart size={22} />
+              <span className="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-white">0</span>
+            </button>
+            <Link to="/profile" className="w-8 h-8 rounded-full bg-sage border border-sand flex items-center justify-center text-primary font-serif italic text-[10px]">
+              AY
+            </Link>
+          </div>
         </header>
         
         <AnimatePresence mode="wait">
@@ -204,7 +210,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
       {/* Mobile Bottom Nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-border flex items-center justify-around px-2 z-20">
-        {navItems.slice(0, 5).map((item) => (
+        {navItems.map((item) => (
           <Link 
             key={item.path} 
             to={item.path} 
@@ -213,8 +219,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               location.pathname === item.path ? "text-primary scale-110" : "text-stone"
             )}
           >
-            <item.icon size={22} />
-            <span className="text-[9px] font-bold uppercase tracking-tighter">{item.label.split(' ')[0]}</span>
+            <item.icon size={20} />
+            <span className="text-[8px] font-bold uppercase tracking-tighter">{item.label.split(' ')[0]}</span>
           </Link>
         ))}
       </nav>
@@ -228,6 +234,7 @@ import BookingSystem from './components/BookingSystem';
 import Courses from './components/Courses';
 import AudioLibrary from './components/AudioLibrary';
 import Profile from './components/Profile';
+import QuranReader from './components/QuranReader';
 
 export default function App() {
   return (
@@ -240,6 +247,7 @@ export default function App() {
           <Route path="/shop" element={<Shop />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/audio" element={<AudioLibrary />} />
+          <Route path="/quran" element={<QuranReader />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </Layout>
