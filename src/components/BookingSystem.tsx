@@ -11,8 +11,6 @@ export default function BookingSystem() {
   const [date, setDate] = useState('2026-05-10');
   const [time, setTime] = useState('10:00 AM');
 
-  const [patientInfo, setPatientInfo] = useState({ name: '', phone: '', concerns: '' });
-
   const handleServiceSelect = (service: Service) => {
     setSelectedService(service);
     setStep(2);
@@ -34,23 +32,18 @@ export default function BookingSystem() {
         <div className="card-natural p-8 w-full text-left space-y-4">
           <div className="flex items-center gap-4 text-stone font-medium">
             <CalendarIcon size={20} className="text-primary" />
-            <span>{date}</span>
+            <span>Sunday, May 10th, 2026</span>
           </div>
           <div className="flex items-center gap-4 text-stone font-medium">
             <Clock size={20} className="text-primary" />
-            <span>{time} (Central Time)</span>
-          </div>
-          <div className="border-t border-sand pt-4 mt-4 space-y-2">
-             <p className="text-xs text-stone uppercase font-bold tracking-widest">Patient Details</p>
-             <p className="font-medium text-primary">{patientInfo.name}</p>
-             <p className="text-sm text-stone">{patientInfo.phone}</p>
+            <span>10:00 AM (Central Time)</span>
           </div>
           <div className="border-t border-sand pt-4 flex justify-between items-center pt-6">
             <span className="font-serif italic text-stone">Total Fee</span>
             <span className="text-2xl font-bold text-primary">${selectedService?.price}</span>
           </div>
         </div>
-        <button onClick={() => { setStep(1); setPatientInfo({name:'', phone:'', concerns:''}); }} className="btn-natural w-full py-4">Return to Dashboard</button>
+        <button onClick={() => setStep(1)} className="btn-natural w-full py-4">Return to Dashboard</button>
       </div>
     );
   }
@@ -193,33 +186,16 @@ export default function BookingSystem() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-stone uppercase tracking-widest ml-4">Full Name</label>
-                  <input
-                    type="text"
-                    value={patientInfo.name}
-                    onChange={(e) => setPatientInfo({...patientInfo, name: e.target.value})}
-                    placeholder="e.g. Abdullah Yusuf"
-                    className="w-full p-5 rounded-[24px] bg-sand border-2 border-transparent focus:bg-white focus:border-primary outline-none transition-all placeholder:text-stone/50 font-medium"
-                  />
+                  <input type="text" placeholder="e.g. Abdullah Yusuf" className="w-full p-5 rounded-[24px] bg-sand border-2 border-transparent focus:bg-white focus:border-primary outline-none transition-all placeholder:text-stone/50 font-medium" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-stone uppercase tracking-widest ml-4">WhatsApp / Phone</label>
-                  <input
-                    type="tel"
-                    value={patientInfo.phone}
-                    onChange={(e) => setPatientInfo({...patientInfo, phone: e.target.value})}
-                    placeholder="+880 1XXX-XXXXXX"
-                    className="w-full p-5 rounded-[24px] bg-sand border-2 border-transparent focus:bg-white focus:border-primary outline-none transition-all placeholder:text-stone/50 font-medium"
-                  />
+                  <input type="tel" placeholder="+880 1XXX-XXXXXX" className="w-full p-5 rounded-[24px] bg-sand border-2 border-transparent focus:bg-white focus:border-primary outline-none transition-all placeholder:text-stone/50 font-medium" />
                 </div>
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-bold text-stone uppercase tracking-widest ml-4">Spiritual Concerns (Optional)</label>
-                <textarea
-                  value={patientInfo.concerns}
-                  onChange={(e) => setPatientInfo({...patientInfo, concerns: e.target.value})}
-                  placeholder="e.g. Feeling extreme fatigue, nightmares, blockages in life..."
-                  className="w-full p-5 rounded-[24px] bg-sand border-2 border-transparent focus:bg-white focus:border-primary outline-none transition-all h-40 placeholder:text-stone/50 font-medium"
-                />
+                <textarea placeholder="e.g. Feeling extreme fatigue, nightmares, blockages in life..." className="w-full p-5 rounded-[24px] bg-sand border-2 border-transparent focus:bg-white focus:border-primary outline-none transition-all h-40 placeholder:text-stone/50 font-medium" />
               </div>
             </div>
 
@@ -227,13 +203,7 @@ export default function BookingSystem() {
               <button onClick={() => setStep(2)} className="text-stone font-bold hover:text-primary transition-colors flex items-center gap-2">
                 <ChevronRight size={20} className="rotate-180" /> Back
               </button>
-              <button
-                onClick={() => setStep(4)}
-                disabled={!patientInfo.name || !patientInfo.phone}
-                className="btn-natural px-12 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Submit Booking Request
-              </button>
+              <button onClick={() => setStep(4)} className="btn-natural px-12">Submit Booking Request</button>
             </div>
           </motion.div>
         )}

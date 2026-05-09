@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ASSESSMENT_QUESTIONS, Question } from '../constants/assessment';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronRight, ChevronLeft, AlertTriangle } from 'lucide-react';
+import { ChevronRight, ChevronLeft, AlertTriangle, Share2, ClipboardList } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { Link } from 'react-router-dom';
 
@@ -26,21 +26,31 @@ export default function AssessmentEngine() {
     if (total > 15) return { 
       level: 'High Concern', 
       desc: 'Your symptoms suggest deep structural spiritual issues that may require direct Ruqyah intervention.',
-      action: 'Book a Consultation',
-      link: '/services'
+      action: 'Book a Consultation'
     };
     if (total > 5) return { 
       level: 'Medium Concern', 
       desc: 'Some signs of spiritual imbalance detected. A self-care plan or protective Adhkar might be beneficial.',
-      action: 'Start 7-Day Plan',
-      link: '/'
+      action: 'Start 7-Day Plan'
     };
     return { 
       level: 'Low Concern', 
       desc: 'No major signs detected. Maintain your daily protection and Adhkar.',
-      action: 'View Daily Duas',
-      link: '/audio'
+      action: 'View Daily Duas'
     };
+  };
+
+  const shareResult = (resultLevel: string) => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Sukun Care - Spiritual Health Assessment',
+        text: `I just completed a spiritual health check on Sukun Care. It's a great tool for self-awareness.`,
+        url: window.location.href,
+      }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(`I just completed a spiritual health check on Sukun Care. Status: ${resultLevel}`);
+      alert('Result link copied to clipboard!');
+    }
   };
 
   if (complete) {
@@ -63,12 +73,21 @@ export default function AssessmentEngine() {
           </div>
 
           <div className="grid grid-cols-1 gap-4 pt-4">
-            <Link to={result.link} className="btn-natural py-4 text-lg text-center block">
+            <button className="btn-natural py-4 text-lg">
               {result.action}
-            </Link>
-            <Link to="/" className="w-full py-4 bg-sand text-primary font-bold rounded-2xl text-center border border-border hover:bg-white transition-colors block">
-              Return to Dashboard
-            </Link>
+            </button>
+            <div className="grid grid-cols-2 gap-4">
+              <button 
+                onClick={() => shareResult(result.level)}
+                className="w-full py-4 bg-white text-primary font-bold rounded-2xl text-center border border-border hover:bg-sand transition-colors flex items-center justify-center gap-2"
+                aria-label="Share assessment result"
+              >
+                <Share2 size={18} /> Share Result
+              </button>
+              <Link to="/" className="w-full py-4 bg-sand text-primary font-bold rounded-2xl text-center border border-border hover:bg-white transition-colors">
+                Dashboard
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -152,26 +171,5 @@ export default function AssessmentEngine() {
         )}
       </AnimatePresence>
     </div>
-  );
-}
-
-function ClipboardList({ size }: { size: number }) {
-  return (
-    <svg 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    >
-      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-      <path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z" />
-      <path d="M9 12h6" />
-      <path d="M9 16h6" />
-      <path d="M12 8h.01" />
-    </svg>
   );
 }
