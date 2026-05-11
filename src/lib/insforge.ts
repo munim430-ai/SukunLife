@@ -1,5 +1,5 @@
 // src/lib/insforge.ts
-// Mock Insforge Authentication integration
+// Real Insforge Fetch client setup
 
 export type User = {
   id: string;
@@ -10,7 +10,33 @@ export type User = {
   isPro: boolean;
 };
 
-// Simulated current user state
+const BASE_URL = import.meta.env.VITE_INSFORGE_BASE_URL;
+const API_KEY = import.meta.env.VITE_INSFORGE_API_KEY;
+
+export const insforgeClient = async (query: string, variables: any = {}) => {
+  if (!BASE_URL || !API_KEY) {
+    console.warn("Missing Insforge credentials. Returning mock data or throwing.");
+    throw new Error("Insforge credentials missing");
+  }
+
+  const response = await fetch(`${BASE_URL}/graphql`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${API_KEY}`,
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+
+  const data = await response.json();
+  if (data.errors) {
+    throw new Error(data.errors[0].message);
+  }
+  return data.data;
+};
+
+// Simulated current user state for MVP frontend preview
+// Real auth would involve exchanging tokens with Insforge via OAuth/JWT
 let currentUser: User | null = {
   id: 'usr_mock123',
   email: 'ahmed@example.com',
@@ -18,61 +44,30 @@ let currentUser: User | null = {
   isPro: true,
 };
 
-// Simulate network delay
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
 export const insforgeAuth = {
-  // Get current session
   getCurrentUser: (): User | null => currentUser,
 
-  // Google Sign In (Mock)
   signInWithGoogle: async (): Promise<User> => {
-    await delay(1000);
-    currentUser = {
-      id: 'usr_mock_google',
-      email: 'user@google.com',
-      displayName: 'Google User',
-      isPro: false,
-    };
-    return currentUser;
+    // In a real app, this would redirect to Insforge OAuth flow
+    await new Promise(r => setTimeout(r, 1000));
+    return currentUser!;
   },
 
-  // Email/Password Login (Mock)
-  signInWithEmail: async (email: string, _password: string): Promise<User> => {
-    await delay(1000);
-    currentUser = {
-      id: 'usr_mock_email',
-      email,
-      displayName: email.split('@')[0],
-      isPro: false,
-    };
-    return currentUser;
-  },
-
-  // Phone OTP Login (Mock)
   requestOTP: async (phoneNumber: string): Promise<boolean> => {
-    await delay(1000);
+    // Requires Insforge custom edge function or integrated Twilio
+    await new Promise(r => setTimeout(r, 1000));
     console.log(`Mock OTP sent to ${phoneNumber}`);
-    return true; // OTP sent successfully
+    return true;
   },
 
   verifyOTP: async (phoneNumber: string, code: string): Promise<User> => {
-    await delay(1000);
-    if (code !== '123456') { // Mock valid code
-      throw new Error("Invalid OTP code");
-    }
-    currentUser = {
-      id: 'usr_mock_phone',
-      phoneNumber,
-      displayName: 'Verified User',
-      isPro: false,
-    };
-    return currentUser;
+    await new Promise(r => setTimeout(r, 1000));
+    if (code !== '123456') throw new Error("Invalid OTP code");
+    return currentUser!;
   },
 
-  // Sign out
   signOut: async (): Promise<void> => {
-    await delay(500);
+    await new Promise(r => setTimeout(r, 500));
     currentUser = null;
   }
 };

@@ -1,10 +1,11 @@
 // src/api/data.ts
-// Mock Database service layer for Insforge Postgres integration
+// Service layer capable of falling back to Mock data if Insforge tables aren't setup yet
+
+import { insforgeClient } from '../lib/insforge';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// --- Mock Data Store ---
-
+// --- Fallback Mock Data Store ---
 const mockDatabase = {
   users: [
     { id: 'usr_mock123', name: 'Ahmed Yusuf', proStatus: true, points: 1240, protectionLevel: 5 },
@@ -14,44 +15,64 @@ const mockDatabase = {
     { id: 'prac_2', name: 'Dr. Sarah', type: 'Certified Hijama', verified: true, rating: 4.8, available: false },
     { id: 'prac_3', name: 'Sheikh Abdullah', type: 'Islamic Counselor', verified: true, rating: 5.0, available: true },
   ],
-  appointments: [
-    { id: 'apt_1', userId: 'usr_mock123', practitionerId: 'prac_1', date: '2024-06-15T10:00:00Z', type: 'Ruqyah', status: 'upcoming' },
-  ],
   hadiths: [
     { id: 'hdt_1', topic: 'Anxiety', text: "O Allah, I seek refuge in You from grief and sadness...", source: "Sahih al-Bukhari 2893" },
     { id: 'hdt_2', topic: 'Protection', text: "Whoever recites Ayatul Kursi after every obligatory prayer...", source: "Sunan an-Nasa'i" },
   ]
 };
 
-// --- API Service Layer ---
-
+// --- Real API Implementation (with Mock Fallbacks) ---
 export const api = {
-  // Users
-  getUserProfile: async (userId: string) => {
-    await delay(500);
-    return mockDatabase.users.find(u => u.id === userId) || null;
-  },
 
-  // Practitioners
   getPractitioners: async (filters?: { type?: string, verifiedOnly?: boolean }) => {
-    await delay(800);
-    let results = [...mockDatabase.practitioners];
-    if (filters?.type) results = results.filter(p => p.type.includes(filters.type!));
-    if (filters?.verifiedOnly) results = results.filter(p => p.verified);
-    return results;
+    try {
+      // Try to fetch from real Insforge DB
+      const GET_PRACTITIONERS = `
+        query {
+          practitioners {
+            id
+            name
+            type
+            verified
+            rating
+            available
+          }
+        }
+      `;
+      const data = await insforgeClient(GET_PRACTITIONERS);
+      let results = data.practitioners;
+      if (filters?.type) results = results.filter((p: any) => p.type.includes(filters.type!));
+      if (filters?.verifiedOnly) results = results.filter((p: any) => p.verified);
+      return results;
+    } catch (e) {
+      // Fallback to mock data if table doesn't exist or not configured
+      console.log("Using mock practitioners");
+      await delay(800);
+      let results = [...mockDatabase.practitioners];
+      if (filters?.type) results = results.filter(p => p.type.includes(filters.type!));
+      if (filters?.verifiedOnly) results = results.filter(p => p.verified);
+      return results;
+    }
   },
 
-  // Appointments
-  bookAppointment: async (userId: string, practitionerId: string, date: string, type: string) => {
-    await delay(1200);
-    const newApt = { id: `apt_${Date.now()}`, userId, practitionerId, date, type, status: 'pending' };
-    mockDatabase.appointments.push(newApt);
-    return newApt;
-  },
-
-  // Hadiths
   getHadithsByTopic: async (topic: string) => {
-    await delay(600);
-    return mockDatabase.hadiths.filter(h => h.topic.toLowerCase() === topic.toLowerCase());
+    try {
+      const GET_HADITHS = `
+        query GetHadiths($topic: String!) {
+          hadiths(where: { topic: { _eq: $topic } }) {
+            id
+            topic
+            text
+            source
+          }
+        }
+      `;
+      const data = await insforgeClient(GET_HADITHS, { topic });
+      return data.hadiths;
+    } catch (e) {
+      console.log("Using mock hadiths");
+      await delay(600);
+      return mockDatabase.hadiths.filter(h => h.topic.toLowerCase() === topic.toLowerCase());
+    }
   }
 };

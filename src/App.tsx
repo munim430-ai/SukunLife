@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Nazar from './pages/Nazar';
 import VerifiedPractitioners from './pages/VerifiedPractitioners';
 import Knowledge from './pages/Knowledge';
+import More from './pages/More';
 import Premium from './pages/Premium';
 import AssessmentEngine from './components/AssessmentEngine';
 import Shop from './components/Shop';
@@ -32,7 +33,7 @@ export default function App() {
           <Route path="/practitioners" element={<VerifiedPractitioners />} />
           <Route path="/knowledge" element={<Knowledge />} />
           <Route path="/shop" element={<Shop />} />
-          <Route path="/more" element={<PlaceholderPage title="More Options" />} />
+          <Route path="/more" element={<More />} />
           <Route path="/premium" element={<Premium />} />
 
           {/* Legacy/Other Routes */}
